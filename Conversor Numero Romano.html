@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Conversor de Números para Algarismos Romanos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #222;
+      color: #fff;
+    }
+
+    h1 {
+      color: #ccc;
+    }
+
+    .container {
+      margin-top: 50px;
+    }
+
+    .input-container {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 5px 10px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .loading-message {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .result {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+  <script>
+    function converterParaRomano() {
+      var input = document.getElementById("numero").value;
+      var resultado = document.getElementById("resultado");
+      var loadingMessage = document.getElementById("loading");
+      resultado.innerHTML = "";
+      loadingMessage.innerHTML = "CARREGANDO";
+
+      var interval = setInterval(function() {
+        loadingMessage.innerHTML += ".";
+      }, 1000);
+
+      setTimeout(function() {
+        clearInterval(interval);
+        loadingMessage.innerHTML = "";
+        resultado.innerHTML = input + " em algarismos romanos e: " + converterNumeroParaRomano(input);
+      }, 5000);
+    }
+
+    function converterNumeroParaRomano(numero) {
+      var romanNumerals = [
+        { numeral: "M", value: 1000 },
+        { numeral: "CM", value: 900 },
+        { numeral: "D", value: 500 },
+        { numeral: "CD", value: 400 },
+        { numeral: "C", value: 100 },
+        { numeral: "XC", value: 90 },
+        { numeral: "L", value: 50 },
+        { numeral: "XL", value: 40 },
+        { numeral: "X", value: 10 },
+        { numeral: "IX", value: 9 },
+        { numeral: "V", value: 5 },
+        { numeral: "IV", value: 4 },
+        { numeral: "I", value: 1 }
+      ];
+
+      var result = "";
+      var num = parseInt(numero, 10);
+
+      if (isNaN(num) || num <= 0) {
+        return "Numero invalido";
+      }
+
+      for (var i = 0; i < romanNumerals.length; i++) {
+        while (num >= romanNumerals[i].value) {
+          result += romanNumerals[i].numeral;
+          num -= romanNumerals[i].value;
+        }
+      }
+
+      return result;
+    }
+  </script>
+</head>
+<body>
+  <h1>Conversor de Numeros para Algarismos Romanos</h1>
+  <div class="container">
+    <div class="input-container">
+      <input type="text" id="numero" placeholder="Digite um número">
+      <button onclick="converterParaRomano()">Converter</button>
+    </div>
+    <p class="loading-message" id="loading"></p>
+    <p class="result" id="resultado"></p>
+  </div>
+</body>
+</html>

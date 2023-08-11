@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Bot Imitando Usuário e Respondendo Sim ou Não</title>
+    <script>
+      function sendMessage() {
+        var inputBox = document.getElementById("input-box");
+        var message = inputBox.value;
+        var messageBox = document.getElementById("message-box");
+        var botMessage = document.createElement("p");
+        var botResponses = [
+          "sim",
+          "não",
+          "talvez",
+          "hohohoooo",
+          "ben nao responde…",
+          "interessante",
+          "Legal 🤓"
+        ];
+        var randomIndex = Math.floor(Math.random() * botResponses.length);
+        var botResponse = botResponses[randomIndex];
+        
+        botMessage.textContent = "Voce: " + message;
+        messageBox.appendChild(botMessage);
+        
+        setTimeout(function() {
+          var botReply = document.createElement("p");
+          botReply.textContent = "Bot: " + botResponse;
+          messageBox.appendChild(botReply);
+        }, 3000);
+        
+        inputBox.value = "";
+      }
+    </script>
+  </head>
+  <body>
+    <div>
+      <input type="text" id="input-box">
+      <button onclick="sendMessage()">Enviar</button>
+    </div>
+    <div id="message-box"></div>
+  </body>
+</html>

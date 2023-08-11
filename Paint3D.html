@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Desenhar bolas 3D com cores aleatórias</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		#canvas {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+</head>
+<body ontouchstart="desenhar(event)" ontouchmove="desenhar(event)">
+	<canvas id="canvas"></canvas>
+
+	<script>
+		var canvas = document.getElementById("canvas");
+		var ctx = canvas.getContext("2d");
+
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+
+		var bolasDesenhadas = 0;
+		var lightSource = {x: -1, y: -1};
+
+		function desenhar(event) {
+			event.preventDefault();
+			var touches = event.changedTouches;
+			for (var i = 0; i < touches.length; i++) {
+				if (bolasDesenhadas < 10000) {
+					var touch = touches[i];
+					var x = touch.pageX - canvas.offsetLeft;
+					var y = touch.pageY - canvas.offsetTop;
+					var diameter = 10;
+					var r = Math.floor(Math.random() * 256);
+					var g = Math.floor(Math.random() * 256);
+					var b = Math.floor(Math.random() * 256);
+					var intensity = calcularIntensidadeLuz(x, y);
+					var shadowColor = "rgb(" + Math.floor(r * 0.5) + "," + Math.floor(g * 0.5) + "," + Math.floor(b * 0.5) + ")";
+					var highlightColor = "rgb(" + Math.floor(r * 1.5) + "," + Math.floor(g * 1.5) + "," + Math.floor(b * 1.5) + ")";
+					var gradient = ctx.createRadialGradient(x, y - diameter / 4, 0, x, y - diameter / 4, diameter / 2);
+					gradient.addColorStop(0, highlightColor);
+					gradient.addColorStop(1, shadowColor);
+					ctx.beginPath();
+					ctx.fillStyle = gradient;
+					ctx.arc(x, y, diameter / 2, 0, Math.PI * 2);
+					ctx.fill();
+					bolasDesenhadas++;
+				} else {
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+					bolasDesenhadas = 0;
+				}
+			}
+		}
+
+		function calcularIntensidadeLuz(x, y) {
+			var distanceX = x - lightSource.x;
+			var distanceY = y - lightSource.y;
+			var distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+			var normalX = distanceX / distance;
+			var normalY = distanceY / distance;
+			var lightVectorX = -1;
+			var lightVectorY = -1;
+			var intensity = normalX * lightVectorX + normalY * lightVectorY;
+			return Math.max(intensity, 0);
+		}
+	</script>
+</body>
+</html>

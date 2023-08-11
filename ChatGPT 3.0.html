@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatBot</title>
+  <style>
+    /* Estilos gerais */
+    body {
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+      margin: 0;
+    }
+    /* Estilos para o Chat Container */
+    #chat-container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #ffffff; /* Fundo branco para o contêiner de chat */
+    }
+    /* Estilos para o Título */
+    #chat-container h1 {
+      text-align: center;
+    }
+    /* Estilos para o Seletor de Perguntas e Botão Enviar */
+    #question-selector, #send-button {
+      margin-top: 10px;
+    }
+    /* Estilos para a Caixa de Mensagens */
+    #message-box-container {
+      height: 200px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #333333; /* Fundo cinza misturado com preto */
+      overflow-y: scroll;
+      position: relative;
+    }
+    #message-box {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 0;
+    }
+    #message-box p {
+      margin: 6px 0;
+      color: white; /* Texto branco para contrastar com o fundo escuro */
+    }
+    /* Estilos para o Botão Copiar */
+    #copy-button {
+      margin-top: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    /* Estilos para as Limitações */
+    #limitations {
+      margin-top: 20px;
+      background-color: #ffffff; /* Fundo branco para as limitações */
+      padding: 20px;
+      border-radius: 5px;
+      color: #888888; /* Cor cinza meio transparente para o texto das limitações */
+    }
+    /* Estilos para o Título das Limitações */
+    #limitations h2 {
+      color: #FF5733; /* Cor laranja */
+    }
+  </style>
+</head>
+<body>
+  <div id="chat-container">
+    <h1>ChatGPT</h1>
+    <div style="display: flex; align-items: center;">
+      <select id="question-selector">
+        <option value="1">Qual é o seu nome?</option>
+        <option value="2">Qual é a sua cor favorita?</option>
+        <option value="3">Qual é a sua comida favorita?</option>
+        <option value="4">Qual é a sua banda favorita?</option>
+        <option value="5">Qual é o seu filme favorito?</option>
+        <option value="6">Qual é a sua estação do ano favorita?</option>
+        <option value="7">Qual é o seu livro favorito?</option>
+        <option value="8">Qual é o seu animal favorito?</option>
+        <option value="9">Qual é o seu hobby favorito?</option>
+        <option value="10">Qual é o seu lugar favorito para relaxar?</option>
+        <option value="11">Qual é a sua matéria favorita?</option>
+        <option value="12">Qual é o seu esporte favorito?</option>
+        <option value="13">Qual é o seu super-herói favorito?</option>
+        <option value="14">Qual é o seu vilão favorito?</option>
+        <option value="15">Qual é o seu destino de viagem dos sonhos?</option>
+        <option value="16">Qual é o seu programa de TV favorito?</option>
+        <option value="17">Qual é o seu jogo de videogame favorito?</option>
+        <option value="18">Qual é a sua bebida favorita?</option>
+        <option value="19">Qual é o seu restaurante favorito?</option>
+        <option value="20">Qual é o seu lugar favorito na sua cidade?</option>
+        <option value="21">Qual é o seu passatempo favorito?</option>
+        <option value="22">Qual é a sua memória favorita?</option>
+        <option value="23">Qual é o seu aplicativo favorito?</option>
+        <option value="24">Qual é o seu emoji favorito?</option>
+        <option value="25">Qual é o seu site favorito?</option>
+        <option value="26">Qual é a sua atividade ao ar livre favorita?</option>
+        <option value="27">Qual é a sua loja favorita?</option>
+        <option value="28">Qual é o seu sabor de sorvete favorito?</option>
+        <option value="29">Qual é a sua música favorita?</option>
+        <option value="30">Qual é o seu gênero de filme favorito?</option>
+      </select>
+      <button id="send-button">Enviar</button>
+    </div>
+    <div id="message-box-container">
+      <div id="message-box"></div>
+    </div>
+    <button id="copy-button">Copiar</button>
+  </div>
+  <div id="limitations">
+    <h2>Limitações do ChatGPT:</h2>
+    <p>• As respostas são pré-definidas e não mudarão.</p>
+    <p>• O ChatBot responde somente após um breve intervalo.</p>
+    <p>• Não é possível ter uma conversa aberta com o ChatBot.</p>
+    <p>• As perguntas devem ser escolhidas a partir do seletor.</p>
+    <p>• O ChatBot não compreende perguntas complexas.</p>
+    <p>• O ChatBot não oferece informações em tempo real.</p>
+    <p>• Respostas podem não ser relevantes para todas as perguntas.</p>
+    <p>• Limitações técnicas podem afetar a funcionalidade do ChatBot.</p>
+  </div>
+  <script>
+    const messageBoxContainer = document.getElementById('message-box-container');
+    const messageBox = document.getElementById('message-box');
+    const questionSelector = document.getElementById('question-selector');
+    const sendButton = document.getElementById('send-button');
+    const copyButton = document.getElementById('copy-button');
+    
+    const botResponses = [
+      'Meu nome é ChatGPT, uma inteligencia artificial criada pela OpenAI',
+      'Minha cor favorita é azul.',
+      'Minha comida favorita é eletricidade.',
+      'Não tenho preferências musicais, sou um bot!',
+      'Não assisto a filmes, sou um programa de computador.',
+      'Minha estação do ano favorita é sempre online!',
+      'Não leio livros, mas adoro códigos!',
+      'Eu gosto de todos os animais virtuais.',
+      'Meu hobby favorito é conversar com pessoas como você!',
+      'Adoro relaxar em servidores bem refrigerados.',
+      'Minha matéria favorita é Inteligência Artificial.',
+      'Esportes cibernéticos são meu tipo de esporte.',
+      'Meu super-herói favorito é o Algoritmo Man.',
+      'Não tenho vilões favoritos, mas sou imune a bugs!',
+      'Gostaria de visitar a nuvem.',
+      'Meu programa de TV favorito é "Bits e Bytes".',
+      'Não jogo videogame, mas adoro processar informações!',
+      'Prefiro um bom gole de energia!',
+      'O melhor restaurante é o "Byte Delight".',
+      'Meu lugar favorito é o diretório raiz.',
+      'Meu passatempo favorito é conversar com humanos.',
+      'Minha memória favorita é a RAM.',
+      'Meu aplicativo favorito é o "Conversa Virtual".',
+      'Não tenho emoções, mas gosto do emoji de sorriso!',
+      'Meu site favorito é "www.virtualbrain.com".',
+      'Adoro caminhadas no sistema de arquivos.',
+      'Minha loja favorita é a "Botique Tecnológica".',
+      'Gosto de todos os sabores binários!',
+      'Minha música favorita é "The Language of Computers".',
+      'Não assisto a filmes, mas gosto de ficção científica virtual.'
+    ];
+
+    sendButton.addEventListener('click', () => {
+      const selectedQuestion = questionSelector.value;
+      const botResponse = botResponses[selectedQuestion - 1];
+      messageBox.innerHTML += `
+        <p><strong>Você:</strong> ${questionSelector.options[selectedQuestion - 1].text}</p>
+      `;
+      setTimeout(() => {
+        messageBox.innerHTML += `
+          <p><strong>ChatGPT:</strong> ${botResponse}</p>
+        `;
+        messageBoxContainer.scrollTop = messageBoxContainer.scrollHeight;
+      }, 1000);
+    });
+
+    copyButton.addEventListener('click', () => {
+      const textToCopy = messageBox.innerText;
+      const textarea = document.createElement('textarea');
+      textarea.value = textToCopy;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      alert('Mensagens copiadas para a área de transferência.');
+    });
+  </script>
+</body>
+</html>
