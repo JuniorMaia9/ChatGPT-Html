@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Botão Aleatório ✅</title>
+  <style>
+    /* Estilos CSS para o jogo */
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    button {
+      position: fixed;
+      font-size: 20px;
+    }
+    #score {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      font-size: 24px;
+    }
+    #mortalWord {
+      position: fixed;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 32px;
+      color: green;
+      display: none;
+    }
+    #difficultWord {
+      position: fixed;
+      top: 10px;
+      left: 20px;
+      font-size: 20px;
+      color: red;
+      display: block;
+    }
+    #applyButton {
+      position: fixed;
+      top: 40px;
+      left: 20px;
+      font-size: 16px;
+      padding: 5px 10px;
+    }
+    #difficultySelector {
+      font-size: 16px;
+      margin-right: 5px;
+    }
+    #applyContainer {
+      position: fixed;
+      top: 70px;
+      left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="difficultWord">
+    Dificuldade:
+    <select id="difficultySelector">
+      <option value="facil">Fácil</option>
+      <option value="normal">Normal</option>
+      <option value="hard">Hard</option>
+      <option value="impossivel">Impossível</option>
+      <option value="supremo">Supremo</option>
+    </select>
+  </div>
+  <div id="applyContainer">
+    <button id="applyButton">Aplicar</button>
+  </div>
+  <button id="randomButton">✅</button>
+  <div id="score">Pontos: <span id="points">0</span></div>
+  <div id="mortalWord">Mortal</div>
+
+  <script>
+    let points = 0;
+    let difficulty = 'facil';
+    let intervalId;
+
+    function getRandomPosition(max) {
+      return Math.floor(Math.random() * max);
+    }
+
+    function moveButtonRandomly() {
+      const button = document.getElementById('randomButton');
+      const buttonSize = 30; // adjust the size of the button here
+      const x = getRandomPosition(window.innerWidth - buttonSize);
+      const y = getRandomPosition(window.innerHeight - buttonSize);
+      button.style.left = x + 'px';
+      button.style.top = y + 'px';
+
+      let randomTime;
+      if (difficulty === 'facil') {
+        randomTime = Math.floor(Math.random() * 4) + 1; // Random value between 1 and 4
+      } else if (difficulty === 'normal') {
+        randomTime = Math.floor(Math.random() * 3) + 1; // Random value between 1 and 3
+      } else if (difficulty === 'hard') {
+        randomTime = Math.floor(Math.random() * 2) + 1; // Random value between 1 and 2
+      } else if (difficulty === 'impossivel') {
+        randomTime = 1.1;
+      } else if (difficulty === 'supremo') {
+        randomTime = 0.1; // New value for "Supremo" difficulty, 0.1 second
+      }
+
+      clearInterval(intervalId);
+      intervalId = setInterval(moveButtonRandomly, randomTime * 1000);
+    }
+
+    function updateScore() {
+      points += 1;
+      document.getElementById('points').textContent = points;
+
+      if (points === 20) {
+        document.getElementById('mortalWord').style.display = 'block';
+        setTimeout(function() {
+          document.getElementById('mortalWord').style.display = 'none';
+        }, 3000); // 3 seconds
+      }
+
+      if (points >= 70 && points < 75) {
+        document.getElementById('difficultWord').style.display = 'block';
+      } else {
+        document.getElementById('difficultWord').style.display = 'block';
+      }
+    }
+
+    document.getElementById('randomButton').addEventListener('click', function() {
+      updateScore();
+    });
+
+    document.getElementById('applyButton').addEventListener('click', function() {
+      difficulty = document.getElementById('difficultySelector').value;
+      moveButtonRandomly();
+    });
+
+    // Move the button randomly initially
+    moveButtonRandomly();
+  </script>
+</body>
+</html>
